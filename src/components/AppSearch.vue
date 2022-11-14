@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container p-4">
         search
     </div>
 </template>

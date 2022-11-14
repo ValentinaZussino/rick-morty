@@ -1,15 +1,22 @@
 <template>
-    <header>
-        header
+    <header class="container">
+        <h1 class="text-center my-5">{{title}}</h1>
     </header>
 </template>
 
 <script>
+import { stringifyExpression } from '@vue/compiler-core';
+
     export default {
-        name: 'AppHeader'
+        name: 'AppHeader',
+        props: {
+            title: String
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-
+h1 {
+    font-weight: 700;
+}
 </style>

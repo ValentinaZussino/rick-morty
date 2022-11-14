@@ -1,8 +1,8 @@
 <template>
-  <AppHeader/>
+  <AppHeader title="Rick and Morty App"/>
   <main>
     <AppSearch/>
-    <CharactersList/>
+    <CharactersList :characters="characterList" :loading="loading"/>
   </main>
 </template>
 
@@ -12,7 +12,33 @@ import AppHeader from './components/AppHeader.vue';
 import AppSearch from './components/AppSearch.vue';
 import CharactersList from './components/CharactersList.vue';
 export default {
-    components: { AppHeader, AppSearch, CharactersList }
+    components: { AppHeader, AppSearch, CharactersList },
+    data(){
+      return {
+        apiURL: 'https://rickandmortyapi.com/api/character',
+        characterList: [],
+        loading: false,
+      }
+    },
+    methods: {
+      getCharacters(){
+        this.loading = true;
+        // devo mettere l'url dell'endpoint che in qst caso è già la mia apiURL
+        axios.get(this.apiURL).then(
+          (res)=>{
+            this.characterList = [...res.data.results];
+            console.log(this.characterList);
+            this.loading = false;
+          },
+        )
+        .catch((error)=>{
+          console.log(error)
+        })
+      }
+    },
+    created(){
+      this.getCharacters()
+    }
 }
 </script>
 
