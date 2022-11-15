@@ -2,7 +2,7 @@
   <AppHeader title="Rick and Morty App"/>
   <main>
     <AppSearch @filteredchar="getCharacters"/>
-    <CharactersList :characters="characterList" :loading="loading"/>
+    <CharactersList />
   </main>
 </template>
 
@@ -11,39 +11,39 @@ import axios from 'axios';
 import AppHeader from './components/AppHeader.vue';
 import AppSearch from './components/AppSearch.vue';
 import CharactersList from './components/CharactersList.vue';
+import {store} from './store';
 export default {
     components: { AppHeader, AppSearch, CharactersList },
     data(){
       return {
-        apiURL: 'https://rickandmortyapi.com/api/character',
-        characterList: [],
-        loading: false,
-        searchStatus: ''
+        store,
+        endpoint: 'character',
       }
     },
     methods: {
-      getCharacters(status){
+      getCharacters(){
         // const apiurl = (status) ? this.apiURL + '?status=' + status : this.apiURL;
         let options = null;
-        if(status) {
+        if(store.searchStatus) {
           options = {
             params: {
-              status: status
+              status: store.searchStatus
             }
           }
         }
         
-        this.loading = true;
+        store.loading = true;
+        const apiurl = store.apiURL + this.endpoint
         // devo mettere l'url dell'endpoint che in qst caso è già la mia apiURL
-        axios.get(this.apiURL, options).then(
+        axios.get(apiurl, options).then(
           (res)=>{
-            this.characterList = [...res.data.results];
-            console.log(this.characterList);
-            this.loading = false;
+            store.characterList = [...res.data.results];
+            console.log(store.characterList);
+            store.loading = false;
           },
         )
         .catch((error)=>{
-          this.loading = false;
+          store.loading = false;
           console.log(error.response.status);
         })
       }

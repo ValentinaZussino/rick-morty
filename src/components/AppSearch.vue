@@ -10,7 +10,7 @@
 
             <div class="col-12">
                 <label class="visually-hidden" for="searchstatus">Search Status</label>
-                <select class="form-select" id="searchstatus" v-model="search">
+                <select class="form-select" id="searchstatus" v-model="store.searchStatus">
                 <option selected>Choose...</option>
                 <option :value="status" v-for="(status, index) in statusOptions" :key="index">{{status}}</option>
                 </select>
@@ -27,18 +27,18 @@
     </div>
 </template>
 
-<script>
-
+<script> 
+import {store} from '../store.js'
     export default {
         name: 'AppSearch',
         data() {
             return {
+                store,
                 statusOptions: [
                     'alive',
                     'dead',
                     'unknown'
                 ],
-                search: ''
             }
         },
         // props: {
@@ -46,12 +46,11 @@
         // },
         methods: {
             searchCharacter(){
-                this.$emit('filteredchar', this.search)
-                console.log(this.search)
+                this.$emit('filteredchar')
             },
             resetSearch() {
-                this.search = '';
-                this.$emit('filteredchar', this.search)
+                store.searchStatus= ''; // oppure: this.store.searchStatus= '';
+                this.$emit('filteredchar')
             }
         }
     }
