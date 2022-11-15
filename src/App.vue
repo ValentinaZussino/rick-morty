@@ -43,7 +43,8 @@ export default {
           },
         )
         .catch((error)=>{
-          console.log(error)
+          this.loading = false;
+          console.log(error.response.status);
         })
       }
     },
