@@ -1,7 +1,7 @@
 <template>
   <AppHeader title="Rick and Morty App"/>
   <main>
-    <AppSearch/>
+    <AppSearch @filteredchar="getCharacters"/>
     <CharactersList :characters="characterList" :loading="loading"/>
   </main>
 </template>
@@ -18,13 +18,24 @@ export default {
         apiURL: 'https://rickandmortyapi.com/api/character',
         characterList: [],
         loading: false,
+        searchStatus: ''
       }
     },
     methods: {
-      getCharacters(){
+      getCharacters(status){
+        // const apiurl = (status) ? this.apiURL + '?status=' + status : this.apiURL;
+        let options = null;
+        if(status) {
+          options = {
+            params: {
+              status: status
+            }
+          }
+        }
+        
         this.loading = true;
         // devo mettere l'url dell'endpoint che in qst caso è già la mia apiURL
-        axios.get(this.apiURL).then(
+        axios.get(this.apiURL, options).then(
           (res)=>{
             this.characterList = [...res.data.results];
             console.log(this.characterList);
